@@ -34,6 +34,9 @@ app.post("/click", (req, res)=>{
 
 app.post("/", (req, res)=>{
     console.log("your name ", req.body)
+    res.json({
+        name: req.body.name
+    })
     res.render("index.ejs", {
         param: req.body
     });
