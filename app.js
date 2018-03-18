@@ -3,6 +3,9 @@ var bodyParser = require("body-parser")
 var morgan = require("morgan")
 var config = require("./config")
 var mongoose = require("mongoose")
+var setupController = require("./api/controllers/setupController");
+var todoController = require("./api/controllers/todoController");
+
 var Schema = mongoose.Schema
 
 var app = express();
@@ -20,6 +23,9 @@ app.set("view engine", "ejs")
 
 // db info 
 mongoose.connect(config.getDbConnectionString())
+
+setupController(app);
+todoController(app);
 
 app.get("/", (req, res)=>{
     res.render("index.ejs", {
