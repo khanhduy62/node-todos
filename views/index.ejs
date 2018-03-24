@@ -1,32 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app.todos">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>NodeJS TODOS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script> -->
+
+    <!-- load cdn -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.2.0/css/xeditable.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.8.1/js/xeditable.min.js"></script>
+    <!--  -->
+    <script src="assets/js/main/app.js"></script>
+    <script src="assets/js/main/services/svTodos.js"></script>
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-<body>
-    <h1>NODE TODOS</h1>
-    
-    <form action="/" method="POST" role="form">
-        <legend>Form title</legend>
-    
-        <div class="form-group">
-            <label for="">Name: </label>
-            <input type="text" class="form-control" id="" placeholder="Input field" name="name">
+
+<body ng-controller="todoController">
+    <div class="container">
+
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1>
+                    {{ appName }}
+                    <span class="label label-info"> {{ todos.length }} </span>
+                </h1>
+            </div>
         </div>
-    
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    
-    <% if (param) { %>
-        <h1><%=param.name%></h1>
-      <% } else { %>
-        <h1>Your name: NULL</h1>
-     <% } %>
-    
+
+        <div id="todo-list" class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="checkbox" ng-repeat="todo in todos">
+                    <input type="checkbox" ng-model="todo.isDone" ng-change="updateTodo(todo)">
+                    <a href="" ng-click="deleteTodo(todo)"><i class="fa fa-remove"></i></a>
+                    <a href="" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible" ><i class="fa fa-edit"></i></a>
+                    <span ng-class="{ strike: todo.isDone }" editable-text="todo.text" e-form="textBtnForm" onaftersave="updateTodo(todo)">
+                        {{ todo.text }}
+                    </span>
+                    </input>
+                </div>
+                <p class="text-center" ng-show="loading">
+                    <span class="fa fa-spinner fa-spin fa-3x" ></span>
+                </p>
+            </div>
+        </div>
+
+
+        <div id="todo-form" class="row">
+            <div class="col-sm-8 col-sm-offset-3 text-center">
+                <form>
+                    <div class="form-group">
+                        <input type="text" ng-model="formData.text" class="form-control text-center" id="" placeholder="What do you want to do?">
+                    </div>
+                    <button type="submit" class="btn btn-primary" ng-disabled="!formData.text" ng-click="createTodo()" >Add</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
 </body>
+
 </html>
